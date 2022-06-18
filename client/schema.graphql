@@ -1,0 +1,12 @@
+type App implements Node {
+  id: ID!
+}
+
+interface Node {
+  id: ID!
+}
+
+type Query {
+  app: App
+}
+

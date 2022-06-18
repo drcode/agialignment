@@ -1,0 +1,8 @@
+{:deps   {io.github.drcode/fbc-utils {:git/tag "v0.0.3"
+                                      :git/sha "df91671"}
+          io.github.drcode/snek      {:git/tag "v0.0.4"
+                                      :git/sha "465682c"}
+          io.aviso/logging           {:mvn/version "0.3.1"}
+          super-server/super-server  {:local/root "../super-server"}
+          clj-oauth/clj-oauth        {:mvn/version "1.5.5"}}
+ :paths ["src" "resources" "dev-resources"]}
