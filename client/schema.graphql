@@ -1,5 +1,17 @@
 type App implements Node {
+  avatars: [Avatar]
   id: ID!
+  userid: String
+}
+
+type Avatar implements Node {
+  aiResearcher: Boolean
+  aiRisk: Boolean
+  followers: Float
+  id: ID!
+  userid: String
+  x: Int
+  y: Int
 }
 
 interface Node {
@@ -7,6 +19,7 @@ interface Node {
 }
 
 type Query {
-  app: App
+  app(oauthToken: String, oauthVerifier: String): App
+  url: String
 }
 

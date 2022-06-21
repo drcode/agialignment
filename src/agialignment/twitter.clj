@@ -1,62 +1,51 @@
 (ns agialignment.twitter
   (:require [fbc-utils.core :as ut]
             [oauth.client :as oa]
-            [fbc-utils.debug]))
+            [fbc-utils.debug]
+            [clj-http.client :as ht]
+            [clojure.data.json :as js]))
 
-;; Create a Consumer, in this case one to access Twitter.
-;; Register an application at Twitter (https://dev.twitter.com/apps/new)
+(def consumer-atom (atom nil)) 
 
-;; to obtain a Consumer token and token secret.
-(def consumer (oauth/make-consumer <consumer-token>
-                                   <consumer-token-secret>
-                                   "https://api.twitter.com/oauth/request_token"
-                                   "https://api.twitter.com/oauth/access_token"
-                                   "https://api.twitter.com/oauth/authorize"
-                                   :hmac-sha1))
+(def request-tokens (atom {}))
 
-    ;; Fetch a request token that a OAuth User may authorize
-    ;; 
-    ;; If you are using OAuth with a desktop application, a callback URI
-    ;; is not required. 
-    (def request-token (oauth/request-token consumer <callback-uri>))
+(defn secrets []
+  (read-string (slurp "secret_keys.edn")))
 
-    ;; Send the User to this URI for authorization, they will be able 
-    ;; to choose the level of access to grant the application and will
-    ;; then be redirected to the callback URI provided with the
-    ;; request-token.
-    (oauth/user-approval-uri consumer 
-                             (:oauth_token request-token))
+(defn consumer []
+  (when-not @consumer-atom
+    (reset! consumer-atom
+            (let [{:keys [consumer-key
+                          consumer-secret]
+                   :as   secrets} (secrets)]
+              (oa/make-consumer consumer-key
+                                consumer-secret
+                                "https://api.twitter.com/oauth/request_token"
+                                "https://api.twitter.com/oauth/access_token"
+                                "https://api.twitter.com/oauth/authorize"
+                                :hmac-sha1))))
+  @consumer-atom)
 
-    ;; Assuming the User has approved the request token, trade it for an access token.
-    ;; The access token will then be used when accessing protected resources for the User.
-    ;;
-    ;; If the OAuth Service Provider provides a verifier, it should be included in the
-    ;; request for the access token.  See [Section 6.2.3](http://oauth.net/core/1.0a#rfc.section.6.2.3) of the OAuth specification
-    ;; for more information.
-    (def access-token-response (oauth/access-token consumer 
-                                                   request-token
-                                                   <verifier>))
+(defn per-user-signup-url []
+  (let [{:keys [oauth_token]
+         :as   request-token} (oa/request-token (consumer) "https://agialignment.com")]
+    (swap! request-tokens assoc oauth_token request-token)
+    (oa/user-approval-uri (consumer) (:oauth_token request-token))))
 
-    ;; Each request to a protected resource must be signed individually.  The
-    ;; credentials are returned as a map of all OAuth parameters that must be
-    ;; included with the request as either query parameters or in an
-    ;; Authorization HTTP header.
-    (def user-params {:status "posting from #clojure with #oauth"})
-    (def credentials (oauth/credentials consumer
-                                        (:oauth_token access-token-response)
-                                        (:oauth_token_secret access-token-response)
-                                        :POST
-                                        "https://api.twitter.com/1.1/statuses/update.json"
-                                        user-params))
+(defn signup-response [oauth-token oauth-verifier] ;found in the url of the callback
+  (let [request-token (@request-tokens oauth-token)]
+    (swap! request-tokens dissoc oauth-token)
+    (try (oa/access-token (consumer) request-token oauth-verifier)
+         (catch Exception e
+           (println (ex-message e))
+           nil))))
 
-    ;; Post with clj-http...
-    (http/post "https://api.twitter.com/1.1/statuses/update.json" 
-               {:query-params (merge credentials user-params)}
-                                         
-    ;; ...or with clojure-twitter (http://github.com/mattrepl/clojure-twitter)
-    (require 'twitter)
-    
-    (twitter/with-oauth consumer 
-                        (:oauth_token access-token-response)            
-                        (:oauth_token_secret access-token-response)
-                        (twitter/update-status "using clj-oauth with clojure-twitter"))
+(defn num-followers [screen-name]
+  (:followers_count (first (js/read-str (:body (ht/get "https://cdn.syndication.twimg.com/widgets/followbutton/info.json" {:query-params {:screen_names screen-name}})) :key-fn keyword))))
+
+(defn avatar [screen-name]
+  (spit "dump.html" (:body (ht/get (str "https://twitter.com/" screen-name)))))
+
+;;(per-user-signup-url)
+;;(def response (signup-response "I38ApwAAAAABd4ZOAAABgXRhF3E" "J7Gc0MXg7xT525HvZoeUShfib9QtmPrn"))
+;;(num-followers "lisperati")

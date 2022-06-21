@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "yarn run relay && react-scripts build && mv build ../resources && rm -rf ../resources/public && mv ../resources/build ../resources/public",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "relay": "relay-compiler"
