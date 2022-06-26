@@ -80,8 +80,7 @@ function Avatar(props){
                border:"solid",
               };
   if(props.movable){
-    return <motion.div style={{transform:"translateX(0) translateY(0)",
-                               ...style,
+    return <motion.div style={{...style,
                                background:"green",
                                zIndex:100,
                               }}
