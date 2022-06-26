@@ -14,12 +14,17 @@ type Avatar implements Node {
   y: Int
 }
 
+type Mutation {
+  updateAvatar(aiResearcher: Boolean, aiRisk: Boolean, decline: Boolean, message: String, useridOverride: String): Avatar
+  updateAvatarPosition(useridOverride: String, x: Int, y: Int): Avatar
+}
+
 interface Node {
   id: ID!
 }
 
 type Query {
-  app(oauthToken: String, oauthVerifier: String): App
+  app(oauthToken: String, oauthVerifier: String, useridOverride: String): App
   url: String
 }
 

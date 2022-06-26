@@ -6,13 +6,13 @@
             [agialignment.twitter :as tw]))
 
 (def db-schema {:user/userid       :string
-                :user/x            :long
-                :user/y            :long
+                :user/x            :bigint
+                :user/y            :bigint
                 :user/followers    :long
                 :user/aiResearcher :boolean
-                :user/aiRisk       :boolean})
-
-(defn connection [])
+                :user/aiRisk       :boolean
+                :user/decline      :boolean
+                :user/message      :string})
 
 (def graphql-schema {:interfaces {:Node {:fields {:id {:type '(non-null ID)}}}}
                      :objects    {:App    {:implements [:Node]
@@ -29,22 +29,24 @@
                                                         :aiResearcher {:type 'Boolean}
                                                         :aiRisk       {:type 'Boolean}}}}
                      :queries    {:app {:type    :App
-                                        :args    {:oauthToken    {:type 'String}
-                                                  :oauthVerifier {:type 'String}}
+                                        :args    {:useridOverride {:type 'String}
+                                                  :oauthToken     {:type 'String}
+                                                  :oauthVerifier  {:type 'String}}
                                         :resolve #'re/app}
                                   :url {:type 'String
                                         :resolve #'re/url}}
-                     :mutations  {}
-                     #_{:addTask    {:type    :Task
-                                     :args    {:data {:type 'String}}
-                                     :resolve #'re/add-task}
-                        :updateTask {:type    :Task
-                                     :args    {:id   {:type '(non-null ID)}
-                                               :data {:type 'String}}
-                                     :resolve #'re/update-task}
-                        :deleteTask {:type    :App
-                                     :args    {:id {:type '(non-null ID)}}
-                                     :resolve #'re/delete-task}}})
+                     :mutations  {:updateAvatar         {:type    :Avatar
+                                                         :args    {:useridOverride {:type 'String}
+                                                                   :aiResearcher   {:type 'Boolean}
+                                                                   :aiRisk         {:type 'Boolean}
+                                                                   :decline        {:type 'Boolean}
+                                                                   :message        {:type 'String}}
+                                                         :resolve #'re/update-avatar}
+                                  :updateAvatarPosition {:type    :Avatar
+                                                         :args    {:useridOverride {:type 'String}
+                                                                   :x              {:type 'Int}
+                                                                   :y              {:type 'Int}}
+                                                         :resolve #'re/update-avatar-position}}})
 
 (defn empty-temp-database! []
   (ss/empty-temp-database! db-schema))
