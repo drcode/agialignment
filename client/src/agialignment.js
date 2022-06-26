@@ -46,7 +46,9 @@ const useridOverride=Object.fromEntries((new URLSearchParams(window.location.sea
 function Avatar(props){
   const ref=useRef();
   function dragEnd(e,info){
-    setTimeout(()=>{
+    dbg({info});
+    info.offset.x=0;
+    info.offset.y=0;
       const container=props.dragConstraints.current;
       const containerRect=container.getBoundingClientRect();
       const avatarRect=ref.current.getBoundingClientRect();
@@ -64,7 +66,6 @@ function Avatar(props){
                avatar.setValue(x,"x");
                avatar.setValue(y,"y");
              });
-    },1000);
   }
   const {x,y}=props;
   dbg({x});
@@ -88,6 +89,8 @@ function Avatar(props){
                        ref={ref}
                        whileDrag={{scale:1.5}}
                        dragMomentum={false}
+                       dragSnapToOrigin
+                       onAnimationComplete={()=>console.log("complete")}
                        onDragEnd={dragEnd}
                        dragConstraints={props.dragConstraints}
                 key={props.userid}/>;
