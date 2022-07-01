@@ -45,10 +45,13 @@ const useridOverride=Object.fromEntries((new URLSearchParams(window.location.sea
 
 function Avatar(props){
   const ref=useRef();
-  function dragEnd(e,info){
-    dbg({info});
-    info.offset.x=0;
-    info.offset.y=0;
+  const [dragging,setDragging]=useState(false);
+  const [keySeq,setKeySeq]=useState(0);
+  function animationComplete(e){
+    if (!dragging){
+      return;
+    }
+    setDragging(false);
       const container=props.dragConstraints.current;
       const containerRect=container.getBoundingClientRect();
       const avatarRect=ref.current.getBoundingClientRect();
@@ -65,11 +68,13 @@ function Avatar(props){
                const avatar=store.get(props.id);
                avatar.setValue(x,"x");
                avatar.setValue(y,"y");
+               setKeySeq(keySeq+1);
              });
   }
+  function dragEnd(e){
+    setDragging(true);
+  }
   const {x,y}=props;
-  dbg({x});
-  dbg({y});
   const px=avatarPadding+(100-avatarPadding*2-avatarSize)*(x+1000)/2000;
   const py=avatarPadding+(100-avatarPadding*2-avatarSize)*(y+1000)/2000;
   const style={position:"absolute",
@@ -79,21 +84,20 @@ function Avatar(props){
                height:`${avatarSize}%`,
                background:"yellow",
                border:"solid",
+               background:"green",
+               zIndex:100,
               };
   if(props.movable){
     return <motion.div style={{...style,
-                               background:"green",
-                               zIndex:100,
                               }}
                        drag
                        ref={ref}
                        whileDrag={{scale:1.5}}
                        dragMomentum={false}
-                       dragSnapToOrigin
-                       onAnimationComplete={()=>console.log("complete")}
+                       onAnimationComplete={animationComplete}
                        onDragEnd={dragEnd}
                        dragConstraints={props.dragConstraints}
-                key={props.userid}/>;
+                       key={`${props.userid}_${keySeq}`}/>;
   }
   else {
     return <div style={style}
@@ -117,8 +121,41 @@ function range(n){
   return [...Array(n).keys()];
 }
 
+function useHover() {
+  const [value, setValue] = useState(false);
+  const ref = useRef(null);
+  const handleMouseOver = () => setValue(true);
+  const handleMouseOut = () => setValue(false);
+  useEffect(
+    () => {
+      const node = ref.current;
+      if (node) {
+        node.addEventListener("mouseover", handleMouseOver);
+        node.addEventListener("mouseout", handleMouseOut);
+        return () => {
+          node.removeEventListener("mouseover", handleMouseOver);
+          node.removeEventListener("mouseout", handleMouseOut);
+        };
+      }
+      else
+        return ()=>{};
+    });
+  return [ref, value];
+}
+
 function Chart(props){
+  const [hoverRef, isHovered] = useHover();
+  const [pos,setPos]=useState([0,0]);
   const ref=useRef();
+  function mouseMove(e){
+    const containerRect=e.currentTarget.getBoundingClientRect();
+    const avatarWidth=containerRect.width*avatarSize/100;
+    const avatarHeight=containerRect.height*avatarSize/100;
+    const x=Math.min(1000,Math.max(-1000,Math.round((e.clientX-containerRect.x)*2000/(containerRect.width-avatarWidth*5)-1000)));
+    const y=Math.min(1000,Math.max(-1000,Math.round((e.clientY-containerRect.y)*2000/(containerRect.height-avatarHeight*5)-1000)));
+    dbg({x});
+    dbg({y});
+  }
   return <div style={{maxHeight:"100%",
                       maxWidth:"100%",
                       marginLeft:"auto",
@@ -128,7 +165,8 @@ function Chart(props){
                       aspectRatio:"1/1",
                       background:"white",
                       position:"relative",
-                     }}>
+                     }}
+              onMouseMove={mouseMove}>
            <svg viewBox="0 0 100 100"
                 style={{width:"100%",
                         height:"100%",

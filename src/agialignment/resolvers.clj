@@ -16,7 +16,7 @@
                         :as   context}
                        {:keys [useridOverride]
                         :as   args}]
-  (let [userid (session-user-id request)]
+  (let [userid (session-userid request)]
     (if (= userid admin-userid)
       (or useridOverride userid)
       userid)))
