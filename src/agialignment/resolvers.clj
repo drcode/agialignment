@@ -62,9 +62,9 @@
             :as   args}
            value]
   (let [{:keys [session-response]} request]
-    (when oauthToken
+    (when #d oauthToken
       (when-let [{:keys [screen_name]
-                  :as   response} (tw/signup-response oauthToken oauthVerifier)]
+                  :as   response} #d (tw/signup-response oauthToken oauthVerifier)]
         (reset! session-response {:userid screen_name})))
     (let [userid (adjusted-userid context args)]
       (when userid

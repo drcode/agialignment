@@ -88,6 +88,7 @@ function Avatar(props){
                zIndex:100,
               };
   if(props.movable){
+    console.log("canmove");
     return <motion.div style={{...style,
                               }}
                        drag
@@ -156,6 +157,7 @@ function Chart(props){
     dbg({x});
     dbg({y});
   }
+  dbg("daf",props.userid);
   return <div style={{maxHeight:"100%",
                       maxWidth:"100%",
                       marginLeft:"auto",
@@ -199,7 +201,7 @@ function Chart(props){
              })}
            </svg>
            <div style={{position:"absolute",
-                        width:`${100-avatarPadding*2}%`,
+                       width:`${100-avatarPadding*2}%`,
                         height:`${100-avatarPadding*2}%`,
                         left:`${avatarPadding}%`,
                         top:`${avatarPadding}%`,
