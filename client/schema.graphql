@@ -9,13 +9,16 @@ type Avatar implements Node {
   aiRisk: Boolean
   followers: Float
   id: ID!
+  message: String
   userid: String
   x: Int
   y: Int
 }
 
 type Mutation {
-  updateAvatar(aiResearcher: Boolean, aiRisk: Boolean, decline: Boolean, message: String, useridOverride: String): Avatar
+  addAvatar(useridOverride: String): App
+  deleteAvatar(useridOverride: String): App
+  updateAvatar(aiResearcher: Boolean, aiRisk: Boolean, message: String, useridOverride: String): Avatar
   updateAvatarPosition(useridOverride: String, x: Int, y: Int): Avatar
 }
 

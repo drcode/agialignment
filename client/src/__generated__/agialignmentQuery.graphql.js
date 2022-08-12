@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<455ddb68370e549f4ac2773af94fac70>>
+ * @generated SignedSource<<39cfd8e797663eb33af65e7f66ec2e76>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -71,6 +71,34 @@ v3 = [
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "aiResearcher",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "aiRisk",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "followers",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "message",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "x",
             "storageKey": null
           },
@@ -106,16 +134,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "fe252ecd92fb8184e53d4d146ebddd5c",
+    "cacheID": "634f9e50afab7391175420d5f79fe8ef",
     "id": null,
     "metadata": {},
     "name": "agialignmentQuery",
     "operationKind": "query",
-    "text": "query agialignmentQuery(\n  $oauthToken: String\n  $oauthVerifier: String\n) {\n  app(oauthToken: $oauthToken, oauthVerifier: $oauthVerifier) {\n    id\n    userid\n    avatars {\n      id\n      userid\n      x\n      y\n    }\n  }\n}\n"
+    "text": "query agialignmentQuery(\n  $oauthToken: String\n  $oauthVerifier: String\n) {\n  app(oauthToken: $oauthToken, oauthVerifier: $oauthVerifier) {\n    id\n    userid\n    avatars {\n      id\n      userid\n      aiResearcher\n      aiRisk\n      followers\n      message\n      x\n      y\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "159b5987b86b72cccdbf0c9f181b1970";
+node.hash = "7bc4a87f9afd2331006138fd37d068f9";
 
 module.exports = node;

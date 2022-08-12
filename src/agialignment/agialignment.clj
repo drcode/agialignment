@@ -11,7 +11,6 @@
                 :user/followers    :long
                 :user/aiResearcher :boolean
                 :user/aiRisk       :boolean
-                :user/decline      :boolean
                 :user/message      :string})
 
 (def graphql-schema {:interfaces {:Node {:fields {:id {:type '(non-null ID)}}}}
@@ -27,7 +26,8 @@
                                                         :y            {:type 'Int}
                                                         :followers    {:type 'Float}
                                                         :aiResearcher {:type 'Boolean}
-                                                        :aiRisk       {:type 'Boolean}}}}
+                                                        :aiRisk       {:type 'Boolean}
+                                                        :message      {:type 'String}}}}
                      :queries    {:app {:type    :App
                                         :args    {:useridOverride {:type 'String}
                                                   :oauthToken     {:type 'String}
@@ -39,9 +39,14 @@
                                                          :args    {:useridOverride {:type 'String}
                                                                    :aiResearcher   {:type 'Boolean}
                                                                    :aiRisk         {:type 'Boolean}
-                                                                   :decline        {:type 'Boolean}
                                                                    :message        {:type 'String}}
                                                          :resolve #'re/update-avatar}
+                                  :addAvatar            {:type    :App
+                                                         :args    {:useridOverride {:type 'String}}
+                                                         :resolve #'re/add-avatar}
+                                  :deleteAvatar         {:type    :App
+                                                         :args    {:useridOverride {:type 'String}}
+                                                         :resolve #'re/delete-avatar}
                                   :updateAvatarPosition {:type    :Avatar
                                                          :args    {:useridOverride {:type 'String}
                                                                    :x              {:type 'Int}

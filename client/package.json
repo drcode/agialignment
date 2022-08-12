@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
     "@lisperati/super-client": "file:../../super-client",
+    "@mui/material": "^5.10.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -17,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "yarn run relay && react-scripts build && mv build ../resources && rm -rf ../resources/public && mv ../resources/build ../resources/public",
+    "build": "yarn run relay && react-scripts build && mv build ../resources && rm -rf ../resources/public && mv ../resources/build ../resources/public && rm -rf ../resources/public/avatars && cd ../resources/public && ln -s ../avatars avatars",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "relay": "relay-compiler"
