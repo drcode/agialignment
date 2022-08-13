@@ -86,5 +86,255 @@
 ;;(add-dummy-data!)
 ;;(permanent-database!)
 ;;(start-server-local-react)
+
 ;;(start-server)
 
+(def starting-data [{:userid       "RichardSSutton"
+                     :bio          "Canadian computer scientist. Research scientist at DeepMind and a professor of computing science at the University of Alberta."
+                     :aiResearcher true
+                     :whenAgi      2040
+                     :agiDoom      1}
+                    {:userid       "raykurzweil"
+                     :bio          "American inventor and futurist. He is involved in fields such as optical character recognition (OCR), text-to-speech synthesis, speech recognition technology, and electronic keyboard instruments."
+                     :aiResearcher true
+                     :whenAgi 	2029
+                     :agiDoom     2}
+                    {:userid  "robinhanson"
+                     :bio     "Associate professor of economics at George Mason University and a research associate at the Future of Humanity Institute of Oxford University. He is known for his work on idea futures and markets."
+                     :whenAgi 2120
+                     :agiDoom 2.5}
+                    {:userid       "rodneyabrooks"
+                     :bio          "Australian roboticist, Fellow of the Australian Academy of Science, author, and robotics entrepreneur, most known for popularizing the actionist approach to robotics."
+                     :aiResearcher true
+                     :whenAgi      2400
+                     :agiDoom      2.5}
+                    {:userid       "AndrewYNg"
+                     :bio          "Co-Founder of Coursera; Stanford CS adjunct faculty. Former head of Baidu AI Group/Google Brain."
+                     :aiResearcher true
+                     :whenAgi      2070
+                     :agiDoom      3}
+                    {:userid       "ylecun"
+                     :bio          "Professor at NYU. Chief AI Scientist at Meta. Researcher in AI, Machine Learning, Robotics, etc. ACM Turing Award Laureate."
+                     :aiResearcher true
+                     :whenAgi      2065
+                     :agiDoom      3}
+                    {:userid  "rohinmshah"
+                     :bio     "Research Scientist at DeepMind. Publishes the Alignment Newsletter."
+                     :aiRisk  true
+                     :whenAgi 2060
+                     :agiDoom 5}
+                    {:userid  "jessi_cata"
+                     :bio     "AI & cogsci-influenced philosopher, designer of scalable blockchain algorithms, embodied game theorist"
+                     :whenAgi 2400
+                     :agiDoom 4}
+                    {:userid       "GaryMarcus"
+                     :bio          "Author Rebooting.AI & Guitar Zero; Founder, Geometric Intelligence & RobustAI. NYU Prof Emeritus"
+                     :aiResearcher true
+                     :whenAgi      2090
+                     :agiDoom      4}
+                    {:userid  "tobyordoxford"
+                     :bio     "Senior Research Fellow — Future of Humanity Institute at Oxford. Author — The Precipice: Existential Risk and the Future of Humanity"
+                     :whenAgi 2065
+                     :agiDoom 10}
+                    {:userid       "stuhlmueller"
+                     :bio          "Cofounder of Ought, a non-profit doing research on using machine learning to support deliberation. Previously, researcher in Noah Goodman's Computation & Cognition lab at Stanford."
+                     :aiResearcher true
+                     :whenAgi      2048
+                     :agiDoom      16}
+                    {:userid  "paulfchristiano"
+                     :bio     "Researcher at OpenAI and research associate at the Future of Humanity Institute, working on AI alignment. Completed a PhD in the theory of computing group at UC Berkeley."
+                     :aiRisk  true
+                     :whenAgi 2048
+                     :agiDoom 18}
+                    {:userid  "peterthiel"
+                     :bio     "Technology entrepreneur & investor"
+                     :whenAgi 2100
+                     :agiDoom 4}
+                    {:userid       "MatthewJBar"
+                     :bio          "Shares things. Predictions: @MJBPredictions. Married to @natalia__coelho."
+                     :aiResearcher true
+                     :whenAgi      2060
+                     :agiDoom      25}
+                    {:userid  "danieldennett"
+                     :bio     "Author and philosopher of mind and cognitive scientist at Tufts University"
+                     :whenAgi 2075
+                     :agiDoom 5}
+                    {:userid       "RichardMCNgo"
+                     :bio          "Researcher at OpenAI"
+                     :aiResearcher true
+                     :whenAgi      2050
+                     :agiDoom      40}
+                    {:userid  "HiFromMichaelV"
+                     :bio     "American futurist, activist, and entrepreneur. Focused on the prevention of global catastrophic risk from emerging technology."
+                     :whenAgi 2053
+                     :agiDoom 7}
+                    {:userid  "VitalikButerin"
+                     :bio     "Principal designer of the Ethereum cryptocurrency, computer scientist."
+                     :whenAgi 2050
+                     :agiDoom 60}
+                    {:userid       "slatestarcodex"
+                     :bio          "Psychiatrist, blogger on rationality, philosophy, psychiatry."
+                     :aiResearcher true
+                     :whenAgi      2040
+                     :agiDoom      80}
+                    {:userid  "weidai11"
+                     :bio     "Cryptographer and AI Alignment Theorist"
+                     :aiRisk  true
+                     :whenAgi 2045
+                     :agiDoom 80}
+                    {:userid  "TheZvi"
+                     :bio     "Card game designer, MTG expert, and rationalist blogger"
+                     :whenAgi 2065
+                     :agiDoom 94}
+                    {:userid  "LaurentOrseau"
+                     :bio     "DeepMind Technologies Limited. Mathématiques et Informatique Appliquées, Paris. AI alignment theorist."
+                     :aiRisk  true
+                     :whenAgi 2032
+                     :agiDoom 6}
+                    {:userid       "sama"
+                     :bio          "CEO, OpenAI"
+                     :aiResearcher true
+                     :whenAgi      2033
+                     :agiDoom      20}
+                    {:userid       "demishassabis"
+                     :bio          "Founder & CEO DeepMind. Working on General AI & modelling biology. Trying to understand the fundamental nature of reality."
+                     :aiResearcher true
+                     :whenAgi      2033
+                     :agiDoom      45}
+                    {:userid  "jackclarkSF"
+                     :bio     "AnthropicAI, ONEAI OECD, co-chair indexingai, writer importai.net"
+                     :aiRisk  true
+                     :whenAgi 2037
+                     :agiDoom 50}
+                    {:userid  "elonmusk"
+                     :bio     "Mars & Cars, Chips & Dips"
+                     :whenAgi 2029
+                     :agiDoom 28}
+                    {:userid       "ShaneLegg"
+                     :bio          "Chief Scientist and Co-Founder, DeepMind"
+                     :aiResearcher true
+                     :whenAgi      2030
+                     :agiDoom      75}
+                    {:userid  "AnnaWSalamon"
+                     :bio     "Executive Director, Center for Applied Rationality"
+                     :aiRisk  true
+                     :whenAgi 2034
+                     :agiDoom 95}
+                    {:userid  "DKokotajlo"
+                     :bio     "Philosophy PhD student, worked at AI Impacts, then Center on Long-Term Risk, now OpenAI Futures/Governance team. "
+                     :aiRisk  true
+                     :whenAgi 2028
+                     :agiDoom 70}
+                    {:userid       "gwern"
+                     :bio          "writer, self-experimenter, and programmer"
+                     :aiResearcher true
+                     :whenAgi      2031
+                     :agiDoom      96}
+                    {:userid  "So8res"
+                     :bio     "Nate Soares is the Executive Director of the Machine Intelligence Research Institute"
+                     :aiRisk  true
+                     :whenAgi 2036
+                     :agiDoom 97}
+                    {:userid  "ESYudkowsky"
+                     :bio     "Ours is the era of inadequate AI alignment theory. Any other facts about this era are relatively unimportant, but sometimes I tweet about them anyway."
+                     :aiRisk  true
+                     :whenAgi 2029
+                     :agiDoom 99}
+                    {:userid       "alyssamvance"
+                     :bio          "Conversational AI engineer, futurist, neophile, machine explorer"
+                     :aiResearcher true
+                     :whenAgi      2045
+                     :agiDoom      75}
+                    {:userid  "MichaelTrazzi"
+                     :bio     "Safety maximalist. Alignment is what you need."
+                     :aiRisk  true
+                     :whenAgi 2027
+                     :agiDoom 93}
+                    {:userid       "tyrell_turing"
+                     :bio          "Researcher in Montréal, @MILAMontreal and @mcgillu, combining machine learning and neuroscience."
+                     :aiResearcher true
+                     :whenAgi      2074
+                     :agiDoom      4}
+                    {:userid       "deepfates"
+                     :bio          "Digital Prophet"
+                     :aiResearcher true
+                     :whenAgi      2035	
+                     :agiDoom      36}
+                    {:userid  "bryan_caplan"
+                     :bio     "GMU econ prof, NYT bestseller, father of 4, author of Myth of the Rational Voter, Selfish Reasons to Have More Kids, Case Against Education, and Open Borders."
+                     :whenAgi 2300
+                     :agiDoom 30}
+                    {:userid       "SchmidhuberAI"
+                     :bio          "Self-improving AI that learns to learn (1987-). Our deep learning neural networks are used many billions of times per day on 3+ billion devices."
+                     :aiResearcher true
+                     :whenAgi      2030
+                     :agiDoom      0}
+                    {:userid       "TheDavidSJ"
+                     :bio          "Studying math and machine learning. Former guidance and navigation software for first stage landing @ SpaceX."
+                     :aiResearcher true
+                     :whenAgi      2030
+                     :agiDoom      30}
+                    {:userid  "William_Kiely"
+                     :bio     "Excited about humanity prioritizing securing a very long-lasting, very postive future this century."
+                     :whenAgi 2060
+                     :agiDoom 65}
+                    {:userid  "Telofy"
+                     :bio     "Borrowing against utopias."
+                     :whenAgi 2040
+                     :agiDoom 74}
+                    {:userid  "benwr"
+                     :bio     "Writes software and does research, often aimed at improving or saving the world. Loves thinking about artificial intelligence, philosophy, cryptography, and robotics."
+                     :whenAgi 2035 
+                     :agiDoom 75}
+                    {:userid  "RatOrthodox"
+                     :bio     "Trying to figure stuff out and make stuff good. Aspiring rationalist. Phil grad student. Despite my efforts my tweets are caused in part by twitter incentives."
+                     :whenAgi 2040
+                     :agiDoom 100}
+                    {:userid  "OHaggstrom"
+                     :bio     "Concerned world citizen and professor of mathematical statistics (in that order)."
+                     :whenAgi 2035
+                     :agiDoom 90}
+                    {:userid  "kmett"
+                     :bio     "Head of Software @GroqInc. Building @ToposInstitute and @HaskellFound. Formerly @MIRIBerkeley"
+                     :whenAgi 2031
+                     :agiDoom 98}
+                    {:userid  "robertskmiles"
+                     :bio     "Machine learning. Artificial intelligence. Data science ; Physics. Information security. Python ; Cloud computing. Internet of things. Futurology ; Philosophy."
+                     :aiRisk  true
+                     :whenAgi 2029
+                     :agiDoom 85}
+                    {:userid       "davidad"
+                     :bio          "wordcloud: randomized social choice—causal modeling—string diagrams—AI strategy"
+                     :aiResearcher true
+                     :whenAgi      2033
+                     :agiDoom      75}
+                    {:userid  "WeakInteraction"
+                     :bio     "Cyclist, effective altruist, and former physicist. These days I'm trying to figure out what fate will befall us if we don't take AI seriously enough."
+                     :aiRisk  true
+                     :whenAgi 2057
+                     :agiDoom 77}
+                    {:userid       "jacyanthis"
+                     :bio          "PhD student in machine learning @UChicago @SentienceInst. Author. Utilitarian. Longtermist. Positivist."
+                     :aiResearcher true
+                     :whenAgi      2054
+                     :agiDoom      29}
+                    {:userid       "peterwildeford"
+                     :bio          "Co-CEO @RethinkPriors. Top 30 @metaculus. Tweets on AI, forecasting, effective altruism. Join me on my journey to learn about the world."
+                     :aiResearcher true
+                     :whenAgi      2054
+                     :agiDoom      20}
+                    {:userid  "NPCollapse"
+                     :bio     "Hacker - Conjecture - EleutherAI - I don't know how to save the world, but dammit I'm gonna try"
+                     :aiRisk  true
+                     :whenAgi 2028
+                     :agiDoom 95}
+                    {:userid       "Kaden_Wolff"
+                     :bio          "Musician, Functional Programming+NLP, Absurdist, Aspiring Rationalist"
+                     :aiResearcher true
+                     :whenAgi      2038
+                     :agiDoom      22}
+                    {:userid  "robbensinger"
+                     :bio     "Comms czar @MIRIBerkeley"
+                     :aiRisk  true
+                     :whenAgi 2032
+                     :agiDoom 99.5}])

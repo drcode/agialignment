@@ -6,12 +6,12 @@ import {AnimatePresence,motion} from 'framer-motion';
 import Button from '@mui/material/Button';
 import Popper from '@mui/material/Popper';
 import Box from '@mui/material/Box';
+import CheckIcon from '@mui/icons-material/Check';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Tooltip from '@mui/material/Tooltip';
-
 function dbg(s,val){
   if(typeof s==="object"){
     const key=Object.keys(s)[0];
@@ -77,7 +77,8 @@ const avatarSize=5;
 const avatarPadding=8;
 
 function Avatar(props){
-  const {x,y,aiResearcher,aiRisk,message}=props;
+  const [anchorEl,setAnchorEl]=useState();
+  const {x,y,aiResearcher,aiRisk,message,userid}=props;
   const ref=useRef();
   const px=avatarPadding+(100-avatarPadding*2-avatarSize)*(x+1000)/2000;
   const py=avatarPadding+(100-avatarPadding*2-avatarSize)*(y+1000)/2000;
@@ -91,20 +92,49 @@ function Avatar(props){
                backgroundRepeat:"no-repeat",
                zIndex:100,
               };
-  return <Tooltip title="✓foo"
-                  placement={y>0
-                             ?"top"
-                             :"bottom"}>
-           <div style={{...style,
-                        border:"solid",
-                       }}
-                key={props.userid}/>
-         </Tooltip>;
+  function handleClick(e){
+    setAnchorEl(anchorEl?null:e.currentTarget);
+  }
+  return <div style={{...style,
+                      border:"solid",
+                     }}
+              key={props.userid}
+              onClick={handleClick}>
+           <Popper open={Boolean(anchorEl)}
+                   placement={y<0
+                              ?"bottom"
+                              :"top"}
+                   anchorEl={anchorEl}>
+             <Flex column
+                   style={{background:"#1da1f2",
+                           padding:"1rem",
+                           borderRadius:"0.5rem",
+                           color:"white",
+                           maxWidth:"20rem",
+                           boxShadow:"0.3rem 0.3rem 1rem #003",
+                          }}>
+               <div style={{marginBottom:"1rem"}}>
+                 <a href={`https://twitter.com/${userid}`}
+                    target="_blank"
+                    style={{color:"white"}}>@{userid}
+                 </a>
+                 {aiResearcher
+                  && <span> - AI Researcher</span>}
+                 {aiRisk
+                  && <span> - AI Risk Researcher</span>}
+               </div>
+               <div>
+                 {message}
+               </div>
+             </Flex>
+           </Popper>
+         </div>;
 }
 
 function AvatarMovable(props){
-  const {x,y,aiResearcher,aiRisk,message}=props;
+  const {x,y,aiResearcher,aiRisk,message,userid}=props;
   const ref=useRef();
+  const refImage=useRef();
   const [dragging,setDragging]=useState(false);
   const [keySeq,setKeySeq]=useState(0);
   const [anchorEl,setAnchorEl]=useState();
@@ -112,6 +142,9 @@ function AvatarMovable(props){
   const [aiRiskNew,setAiRiskNew]=useState(aiRisk);
   const [messageNew,setMessageNew]=useState(message);
   const changes=((message!==messageNew)||(aiResearcher!==aiResearcherNew)||(aiRisk!==aiRiskNew));
+  useEffect(()=>{
+    setAnchorEl(refImage.current);
+  },[]);
   function animationComplete(e){
     if (!dragging){
       return;
@@ -134,6 +167,7 @@ function AvatarMovable(props){
                avatar.setValue(x,"x");
                avatar.setValue(y,"y");
                setKeySeq(keySeq+1);
+               setAnchorEl(null);
              });
   }
   function dragEnd(e){
@@ -203,17 +237,22 @@ function AvatarMovable(props){
                         backgroundSize:"contain",
                         backgroundPosition:"center",
                        }}
+                ref={refImage}
                 onClick={handleClick}
            />
            <Popper open={Boolean(anchorEl)}
-                   anchorEl={{anchorEl}}>
+                   placement={y<0
+                              ?"bottom"
+                              :"top"}
+                   anchorEl={anchorEl}>
              <Flex column
                    style={{background:"#1da1f2",
                            padding:"2rem",
                            borderRadius:"1rem",
                            color:"white",
+                           boxShadow:"0.3rem 0.3rem 1rem #003",
                           }}>
-               <div style={{marginBottom:"1rem"}}>Are you an...</div>
+               <div style={{marginBottom:"1rem"}}>@{userid}, are you an...</div>
                <FormGroup>
                  <FormControlLabel control={<Switch />}
                                    checked={aiResearcherNew}
@@ -224,7 +263,9 @@ function AvatarMovable(props){
                                    onChange={aiRiskChange}
                                    label="AI Risk Researcher?"/>
                </FormGroup>
-               <TextField style={{marginTop:"1rem"}}
+    <TextField style={{marginTop:"1rem",
+                       background:"white",
+                       borderRadius:"0.25rem",}}
                           multiline
                           value={messageNew}
                           onChange={handleChange}
