@@ -7,6 +7,7 @@ type App implements Node {
 type Avatar implements Node {
   aiResearcher: Boolean
   aiRisk: Boolean
+  expert: Boolean
   followers: Float
   id: ID!
   message: String

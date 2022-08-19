@@ -12,8 +12,9 @@
 
 (defn session-userid [{:keys [request]
                        :as   context}]
-  admin-userid
-  #_(:userid @(:session-response request)))
+  #_admin-userid
+  (when-let [session (:session-response request)]
+    (:userid #d @session)))
 
 (defn adjusted-userid [{:keys [request]
                         :as   context}
@@ -42,6 +43,7 @@
                 :user/followers   
                 :user/aiResearcher
                 :user/aiRisk
+                :user/expert
                 :user/message]
          :as   avatar} (dh/entity db eid)]
     {:id           (str "avatar:" eid)
@@ -51,6 +53,7 @@
      :followers    followers
      :aiResearcher aiResearcher
      :aiRisk       aiRisk
+     :expert       expert
      :message      message}))
 
 (defn get-avatar-eid [db userid]
@@ -82,15 +85,15 @@
                    oauthVerifier]
             :as   args}
            value]
-  (let [{:keys [session-response]} request]
-    (when oauthToken
-      (when-let [{:keys [screen_name]
-                  :as   response} (tw/signup-response oauthToken oauthVerifier)]
-        (reset! session-response {:userid screen_name})))
-    (let [userid (adjusted-userid context args)]
-      (add-avatar-helper db userid)
-      {:id     "app:0"
-       :userid (session-userid request)})))
+  #d (let [{:keys [session-response]} request]
+       (when #d oauthToken
+         (when-let [{:keys [screen_name]
+                     :as   response} (tw/signup-response oauthToken oauthVerifier)]
+           (reset! session-response {:userid screen_name}))
+         (let [userid (adjusted-userid context args)]
+           (add-avatar-helper db userid)))
+       {:id     "app:0"
+        :userid #d (session-userid request)}))
 
 (defn app-avatars [db context args value]
   (let [eids (map first (dh/q '[:find ?e :where [?e :user/userid ?n]] @db))]

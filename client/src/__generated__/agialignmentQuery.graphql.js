@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<39cfd8e797663eb33af65e7f66ec2e76>>
+ * @generated SignedSource<<f2484197bc9111aed241dd52a679901e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -85,6 +85,13 @@ v3 = [
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "expert",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "followers",
             "storageKey": null
           },
@@ -134,16 +141,16 @@ return {
     "selections": (v3/*: any*/)
   },
   "params": {
-    "cacheID": "634f9e50afab7391175420d5f79fe8ef",
+    "cacheID": "dc05ec3a0e6fe9a2ec59b74ecdb7af29",
     "id": null,
     "metadata": {},
     "name": "agialignmentQuery",
     "operationKind": "query",
-    "text": "query agialignmentQuery(\n  $oauthToken: String\n  $oauthVerifier: String\n) {\n  app(oauthToken: $oauthToken, oauthVerifier: $oauthVerifier) {\n    id\n    userid\n    avatars {\n      id\n      userid\n      aiResearcher\n      aiRisk\n      followers\n      message\n      x\n      y\n    }\n  }\n}\n"
+    "text": "query agialignmentQuery(\n  $oauthToken: String\n  $oauthVerifier: String\n) {\n  app(oauthToken: $oauthToken, oauthVerifier: $oauthVerifier) {\n    id\n    userid\n    avatars {\n      id\n      userid\n      aiResearcher\n      aiRisk\n      expert\n      followers\n      message\n      x\n      y\n    }\n  }\n}\n"
   }
 };
 })();
 
-node.hash = "7bc4a87f9afd2331006138fd37d068f9";
+node.hash = "b6e37200bf786153b3dff054a9231bbd";
 
 module.exports = node;
