@@ -1,11 +1,11 @@
-{:deps   {io.github.drcode/fbc-utils {:git/tag "v0.0.3"
-                                      :git/sha "df91671"}
-          io.github.drcode/snek      {:git/tag "v0.0.4"
-                                      :git/sha "465682c"}
-          io.aviso/logging           {:mvn/version "0.3.1"}
-          super-server/super-server  {:local/root "../super-server"}
-          clj-oauth/clj-oauth        {:mvn/version "1.5.5"}
-          org.clojure/data.json      {:mvn/version "2.4.0"}
-          clj-http/clj-http          {:mvn/version "3.12.3"}
-          etaoin/etaoin              {:mvn/version "1.0.38"}}
+{:deps   {io.github.drcode/fbc-utils    {:git/tag "v0.0.3"
+                                         :git/sha "df91671"}
+          io.github.drcode/snek         {:git/tag "v0.0.4"
+                                         :git/sha "465682c"}
+          io.aviso/logging              {:mvn/version "0.3.1"}
+          io.github.drcode/super-server {:git/sha "935b205c354b75b0519c6fb1eb3db9b9f702200d"}
+          clj-oauth/clj-oauth           {:mvn/version "1.5.5"}
+          org.clojure/data.json         {:mvn/version "2.4.0"}
+          clj-http/clj-http             {:mvn/version "3.12.3"}
+          etaoin/etaoin                 {:mvn/version "1.0.38"}}
  :paths ["src" "resources" "dev-resources"]}
