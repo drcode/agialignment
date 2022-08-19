@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "yarn run relay && react-scripts build && mv build ../resources && rm -rf ../resources/public && mv ../resources/build ../resources/public && rm -rf ../resources/public/avatars && cd ../resources/public && ln -s ../avatars avatars",
+    "build": "yarn run relay && react-scripts build && mv build ../resources && rm -rf ../resources/public && mv ../resources/build ../resources/public",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "relay": "relay-compiler"

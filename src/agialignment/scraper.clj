@@ -18,4 +18,4 @@
   (ea/go (driver) (str "https://twitter.com/" username))
   (ea/wait-exists (driver) {:css "a[href$='/photo'] img[src]"})
   (let [url (ea/get-element-attr (driver) {:css "a[href$='/photo'] img[src]"} :src)]
-    (copy url (str "resources/avatars/" username))))
+    (copy url (str "resources/public/avatars/" username))))

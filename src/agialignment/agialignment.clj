@@ -104,18 +104,17 @@
   (float (/ (ut/round (* 10 n)) 10)))
 
 (defn time-formula [n] ;given alkn n from 0->100 generates a plausible year
-  (+ (* 2.3000000000000005e+003)
-     (* -1.4140000000000446e+001 n)
-     (* 2.9173333333335694e-001 n n)
-     (* -2.7200000000003775e-003 n n n)
-     (* 9.3866666666685278e-006 n n n n)))
+  (+ (* 2.1500000000000000e+003)
+     (* -4.6866666666668495e+000 n)
+     (* 8.0133333333343076e-002 n n)
+     (* -6.9333333333348990e-004 n n n)
+     (* 2.3466666666674403e-006 n n n n)))
 
 (defn risk-formula [n] ;given an n from 0->100 generates a plausible risk
-  (+ (* -1.4432899320127035e-015)
-     (* -3.9999999999999980e-002 n)
-     (* 1.3600000000000001e-002 n n)
-     (* -3.1999999999999999e-005 n n n)
-     (* 0.0000000000000000e+000 n n n n)))
+  (+ (* 8.4285714285718205e-001)
+     (* 3.3857142857141720e-001 n)
+     (* 4.9142857142860322e-003 n n)
+     (* 1.5999999999997882e-005 n n n)))
 
 (defn round-all-possible [coll] ;if numbers can be rounded without conflicting with neighbors, do it
   (map (fn [a b c]
