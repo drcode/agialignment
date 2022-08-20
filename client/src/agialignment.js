@@ -525,6 +525,7 @@ function App(props){
                                      ">5000 followers":true,
                                      ">50,000 followers":true,
                                      "Everyone Else":true});
+  const [deleteState,setDeleteState]=useState(0);
   if(!params.oauth_token&&!params.abcd)
     return <div/>;
   function signinClick(){
@@ -555,6 +556,22 @@ function App(props){
     f[k]=!f[k];
     setFilter(f);
   }
+  function deleteClick(k){
+    if (deleteState===0){
+      setDeleteState(1);
+    }
+    else {
+      mutate(graphql`mutation agialignmentDeleteAvatarMutation($useridOverride:String){
+             deleteAvatar(useridOverride:$useridOverride){
+               id
+             }}`,
+             {useridOverride:activeUserId},
+             (store)=>{
+               window.location.reload();
+             },
+             (store)=>{});
+    }
+  }
   return <Flex stretch
                style={{height:"100vh"}}>
            <Flex column
@@ -583,23 +600,28 @@ function App(props){
                           marginTop:"2rem",
                           width:"70%",
                          }}>
-               Log in to twitter to add/edit/delete your avatar on the alignment chart
-               <br/>
-               <br/>
-               <Button onClick={signinClick}
-                       variant="contained"
-               size="large">
-                 Twitter Login
-               </Button>
-               <br/>
-               <br/>
-               After you are done, you can go <a href="http://example.com">here</a> to fully disconnect this app from twitter
-               <br/>
+               {!activeUserId
+                && <div style={{marginBottom:"2rem"}}>
+                     Log in to twitter to add/edit/delete your avatar on the alignment chart</div>
+               }
+               {!activeUserId
+                && <Button onClick={signinClick}
+                           style={{marginBottom:"2rem"}}
+                           variant="contained"
+                           size="large">
+                     Twitter Login
+                   </Button>}
+               <div>
+                 After you are done, you can go <a href="https://twitter.com/settings/connected_apps">here</a> to fully disconnect this app from twitter
+               </div>
              </div>
              {activeUserId
               && <Button variant="contained"
-                         color="secondary">
-                   Delete all my data from this site
+                         color="secondary"
+                         onClick={deleteClick}>
+                   {deleteState===0
+                    ?"Delete all my data from this site"
+                    :"Click again to permanently delete"}
                  </Button>}
              {props.userid===adminUserid
               && <div>
@@ -632,7 +654,7 @@ function App(props){
                                                                  userSelect:"none",
                                                                 }}
                                                          onClick={partial(filterClick,k)}>
-                                                      {dbg({k})}
+                                                      {k}
                                                     </div>)}
              </Flex>
            </Flex>
