@@ -28,7 +28,7 @@
 
 (defn per-user-signup-url []
   (let [{:keys [oauth_token]
-         :as   request-token} (oa/request-token (consumer) "https://agialignment.com")]
+         :as   request-token} (oa/request-token (consumer) "https://agialignment.com/index.html")]
     (swap! request-tokens assoc oauth_token request-token)
     (oa/user-approval-uri (consumer) (:oauth_token request-token))))
 
