@@ -94,12 +94,6 @@
 
 ;;(start-server)
 
-(def time-ranges [[0 2400]
-                  [25 2075]
-                  [50 2040]
-                  [75 2033]
-                  [100 2022]])
-
 (defn limited-precision [n]
   (float (/ (ut/round (* 10 n)) 10)))
 

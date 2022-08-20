@@ -10,11 +10,10 @@
 
 (def admin-userid "lisperati")
 
-(defn session-userid [{:keys [request]
-                       :as   context}]
+(defn session-userid [request]
   #_admin-userid
   (when-let [session (:session-response request)]
-    (:userid #d @session)))
+    (:userid @session)))
 
 (defn adjusted-userid [{:keys [request]
                         :as   context}
@@ -85,15 +84,15 @@
                    oauthVerifier]
             :as   args}
            value]
-  #d (let [{:keys [session-response]} request]
-       (when #d oauthToken
-         (when-let [{:keys [screen_name]
-                     :as   response} (tw/signup-response oauthToken oauthVerifier)]
-           (reset! session-response {:userid screen_name}))
-         (let [userid (adjusted-userid context args)]
-           (add-avatar-helper db userid)))
-       {:id     "app:0"
-        :userid #d (session-userid request)}))
+  (let [{:keys [session-response]} request]
+    (when oauthToken
+      (when-let [{:keys [screen_name]
+                  :as   response} {:oauth_token "35367022-7EZgRVQYZ1JGX2qvqGzaHkSgLrFQ8a0TRLuBzKsBb", :oauth_token_secret "Es8XuFJHT4cuFfYseSjuG5Vz1U8RedszfIOZ1Q2MkUBB6", :user_id "35367022", :screen_name "lisperati"} #_(tw/signup-response oauthToken oauthVerifier)]
+        (reset! session-response {:userid screen_name}))
+      (let [userid (adjusted-userid context args)]
+        (add-avatar-helper db userid)))
+    {:id     "app:0"
+     :userid (session-userid request)}))
 
 (defn app-avatars [db context args value]
   (let [eids (map first (dh/q '[:find ?e :where [?e :user/userid ?n]] @db))]
