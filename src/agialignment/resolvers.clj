@@ -87,7 +87,7 @@
   (let [{:keys [session-response]} request]
     (when oauthToken
       (when-let [{:keys [screen_name]
-                  :as   response} {:oauth_token "35367022-7EZgRVQYZ1JGX2qvqGzaHkSgLrFQ8a0TRLuBzKsBb", :oauth_token_secret "Es8XuFJHT4cuFfYseSjuG5Vz1U8RedszfIOZ1Q2MkUBB6", :user_id "35367022", :screen_name "lisperati"} #_(tw/signup-response oauthToken oauthVerifier)]
+                  :as   response} (tw/signup-response oauthToken oauthVerifier)]
         (reset! session-response {:userid screen_name}))
       (let [userid (adjusted-userid context args)]
         (add-avatar-helper db userid)))
