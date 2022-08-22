@@ -7,16 +7,18 @@
 (defonce driver-atom (atom nil))
 
 (defn driver []
-  (or @driver-atom (reset! driver-atom (ea/chrome {:headless true}))))
+  (or @driver-atom
+      (reset! driver-atom
+              (ea/chrome {:headless true
+                          :args     ["--no-sandbox"]}))))
 
 (defn copy [uri file]
-  (with-open [in (io/input-stream uri)
+  (with-open [in  (io/input-stream uri)
               out (io/output-stream file)]
     (io/copy in out)))
 
 (defn fetch-avatar [username]
-  #d :heeer
-  #d (ea/go (driver) #d (str "https://twitter.com/" username))
-  #d (ea/wait-exists (driver) {:css "a[href$='/photo'] img[src]"})
-  (let [url #d (ea/get-element-attr (driver) {:css "a[href$='/photo'] img[src]"} :src)]
-    #d (copy url (str "resources/public/avatars/" username))))
+  (ea/go (driver)  (str "https://twitter.com/" username))
+  (ea/wait-exists (driver) {:css "a[href$='/photo'] img[src]"})
+  (let [url  (ea/get-element-attr (driver) {:css "a[href$='/photo'] img[src]"} :src)]
+    (copy url (str "resources/public/avatars/" username))))
