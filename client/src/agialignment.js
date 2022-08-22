@@ -8,6 +8,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
+import {isMobile} from 'react-device-detect';
 function dbg(s,val){
   if(typeof s==="object"){
     const key=Object.keys(s)[0];
@@ -42,8 +43,17 @@ function Flex(props){
   if(props.column){
     style.flexDirection="column";
   }
+  if(props.columnReverse){
+    style.flexDirection="column-reverse";
+  }
+  if(props.rowReverse){
+    style.flexDirection="row-reverse";
+  }
   if(props.between){
     style.justifyContent="space-between";
+  }
+  if(props.spaceEvenly){
+    style.justifyContent="space-evenly";
   }
   if(props.end){
     style.justifyContent="flex-end";
@@ -73,7 +83,7 @@ function Flex(props){
          </motion.div>;
 }
 
-const avatarSize=5;
+const avatarSize=7;
 const avatarPadding=8;
 
 function avatarZIndex(followers){
@@ -111,8 +121,9 @@ function Avatar(props){
     props.onPopperChange(false);
   }
   return <div style={{...style,
-                      border:"solid",
+                      //                      border:"solid",
                       zIndex:pushed?0:avatarZIndex(followers),
+                      borderRadius:"50%",
                      }}
               key={props.userid}
               onClick={handleClick}
@@ -526,6 +537,7 @@ function App(props){
                                      ">50,000 followers":true,
                                      "Everyone Else":true});
   const [deleteState,setDeleteState]=useState(0);
+  const landscape=window.innerHeight<window.innerWidth;
   if(!params.oauth_token&&!params.abcd)
     return <div/>;
   function signinClick(){
@@ -572,95 +584,175 @@ function App(props){
              (store)=>{});
     }
   }
+  function rem(n){
+    if (isMobile){
+      return n*0.5+"rem";
+    }
+    else{
+      return n+"rem";
+    }
+  }
+  const title=<div style={{fontFamily:"Fredoka One",
+                           fontSize:rem(4),
+                           textAlign:"Center",
+                           color:"white",
+                           borderRadius:rem(2),
+                           padding:rem(2),
+                           marginTop:(landscape
+                                      ?"2rem"
+                                      :"0rem"),
+                          }}>
+                AGI Alignment {landscape && <br />}
+                Folks on Twitter
+              </div>;
+  const login=<div style={{fontSize:rem(2),
+                           textAlign:"Center",
+                           background:"#bfe7ff",
+                           color:"#1a90d9",
+                           borderRadius:rem(2),
+                           padding:rem(2),
+                           marginBottom:rem(2),
+                           marginTop:(landscape
+                                      ?"2rem"
+                                      :"0rem"),
+                           width:"70%",
+                          }}>
+                {!activeUserId
+                 && <div style={{marginBottom:rem(2)}}>
+                      Log in to twitter to add/edit/delete your avatar on the alignment chart</div>
+                }
+                {!activeUserId
+                 && <Button onClick={signinClick}
+                            style={{marginBottom:rem(2)}}
+                            variant="contained"
+                            size="large">
+                      Twitter Login
+                    </Button>}
+                <div>
+                  After you are done, you can go <a style={{color:"#1a90d9"}} href="https://twitter.com/settings/connected_apps">here</a> to fully disconnect this app from twitter
+                </div>
+              </div>;
+  const filters=<Flex wrap
+                      center
+                      end={!landscape}
+                      style={{marginLeft:rem(3),
+                              marginRight:rem(3),
+                             }}>
+                  {!landscape
+                   && <div style={{fontSize:rem(2),
+                                   color:"#cfecff",
+                                  }}>
+                        filters:
+                      </div>}
+                  {Object.entries(filter).map(([k,v])=><div key={k}
+                                                            style={{fontSize:rem(2),
+                                                                    textAlign:"Center",
+                                                                    color:v?"#1a90d9":"#bfe7ff",
+                                                                    background:v?"#bfe7ff":"#1a90d9",
+                                                                    margin:rem(0.5),
+                                                                    padding:rem(0.5),
+                                                                    borderStyle:"solid",
+                                                                    borderColor:"#cfecff",
+                                                                    borderRadius:rem(1),
+                                                                    cursor:"pointer",
+                                                                    userSelect:"none",
+                                                                   }}
+                                                            onClick={partial(filterClick,k)}>
+                                                         {k}
+                                                       </div>)}
+                </Flex>;
+  const extra=<div>
+                {activeUserId
+                 && <Button variant="contained"
+                            color="secondary"
+                            onClick={deleteClick}>
+                      {deleteState===0
+                       ?"Delete all my data from this site"
+                       :"Click again to permanently delete"}
+                    </Button>}
+                {props.userid===adminUserid
+                 && <div>
+                      <input onChange={changer(setOtherUserid)}></input>
+                      <button onClick={addClick}>add</button>
+                    </div>}
+              </div>;
+  const credits=
+          <Flex center
+              style={{fontSize:rem(1.5),
+                      color:"#cfecff",
+                      margin:rem(1),
+                      marginTop:rem(2),
+                     }}>
+          <div style={{width:rem(6),
+                       height:rem(6),
+                       borderRadius:"50%",
+                       background:"url(avatars/lisperati)",
+                       backgroundSize:"cover",
+                      }}/>
+          <div style={{width:"70%",
+                       marginLeft:rem(1),
+                      }}>Created by <a style={{color:"#cfecff"}} href="https://twitter.com/lisperati">@lisperati</a>- Thanks to @robbensinger for sharing data and feedback. Many positions on this chart are just estimates by @lisperati, all errors are @lisperati's fault. <a style={{color:"#cfecff"}} href="https://github.com/drcode/agialignment">Github</a></div>
+          </Flex>;
   return <Flex stretch
-               style={{height:"100vh"}}>
-           <Flex column
-             center
-                 style={{width:"33%",
-                         background:"#1da1f2",
-                        }}>
-             <div style={{fontFamily:"Fredoka One",
-                          fontSize:"4rem",
-                          textAlign:"Center",
-                          color:"white",
-                          borderRadius:"2rem",
-                          padding:"2rem",
-                          marginTop:"2rem",
-                         }}>
-               AGI Alignment<br />
-               Folks on Twitter
-             </div>
-             <div style={{fontSize:"2rem",
-                          textAlign:"Center",
-                          background:"#bfe7ff",
-                          color:"#1a90d9",
-                          borderRadius:"2rem",
-                          padding:"2rem",
-                          marginBottom:"2rem",
-                          marginTop:"2rem",
-                          width:"70%",
-                         }}>
-               {!activeUserId
-                && <div style={{marginBottom:"2rem"}}>
-                     Log in to twitter to add/edit/delete your avatar on the alignment chart</div>
-               }
-               {!activeUserId
-                && <Button onClick={signinClick}
-                           style={{marginBottom:"2rem"}}
-                           variant="contained"
-                           size="large">
-                     Twitter Login
-                   </Button>}
-               <div>
-                 After you are done, you can go <a href="https://twitter.com/settings/connected_apps">here</a> to fully disconnect this app from twitter
-               </div>
-             </div>
-             {activeUserId
-              && <Button variant="contained"
-                         color="secondary"
-                         onClick={deleteClick}>
-                   {deleteState===0
-                    ?"Delete all my data from this site"
-                    :"Click again to permanently delete"}
-                 </Button>}
-             {props.userid===adminUserid
-              && <div>
-                   <input onChange={changer(setOtherUserid)}></input>
-                   <button onClick={addClick}>add</button>
-                 </div>}
-             <div style={{fontSize:"2rem",
-                          textAlign:"Center",
-                          color:"#cfecff",
-                          marginTop:"2rem",
-                         }}>
-               Filters
-             </div>
-             <Flex wrap
+               columnReverse={!landscape}
+               style={{height:"100vh",
+                       width:"100vw",
+                      }}>
+           {landscape
+            ?<Flex column
                    center
-                   style={{marginLeft:"3rem",
-                                marginRight:"3rem",
-                               }}>
-               {Object.entries(filter).map(([k,v])=><div key={k}
-                                                         style={{fontSize:"2rem",
-                                                                 textAlign:"Center",
-                                                                 color:v?"#1a90d9":"#bfe7ff",
-                                                                 background:v?"#bfe7ff":"#1a90d9",
-                                                                 margin:"0.5rem",
-                                                                 padding:"0.5rem",
-                                                                 borderStyle:"solid",
-                                                                 borderColor:"#cfecff",
-                                                                 borderRadius:"1rem",
-                                                                 cursor:"pointer",
-                                                                 userSelect:"none",
-                                                                }}
-                                                         onClick={partial(filterClick,k)}>
-                                                      {k}
-                                                    </div>)}
+                   style={{width:"33%",
+                           background:"#1da1f2",
+                           overflow:"auto",
+                          }}>
+               <Flex column
+                     center
+                     style={{flexGrow:1,
+                             background:"#1da1f2",
+                            }}>
+               {title}
+               {login}
+               {extra}
+               <div style={{fontSize:rem(2),
+                            textAlign:"Center",
+                            color:"#cfecff",
+                            marginTop:rem(2),
+                           }}>
+                 Filters
+               </div>
+                 {filters}
+            {(!isMobile)
+             && <div style={{marginTop:rem(4),
+                            }}
+                ><a style={{fontSize:rem(2),
+                            textAlign:"Center",
+                            color:"#cfecff",
+                               }}
+                        href="https://www.youtube.com/watch?v=9i1WlcCudpU">See a good intro to AI risk here</a></div>}
+               </Flex>
+               {credits}
              </Flex>
-           </Flex>
-           <div style={{width:"67%",
-                        padding:"1rem",
-                       }}>
+            :<Flex column
+                   center
+                   spaceEvenly
+                   style={{background:"#1da1f2",
+                           flexGrow:1,
+                           paddingBottom:rem(2),
+                          }}>
+               {title}
+               {login}
+               {extra}
+               {filters}
+               {credits}
+             </Flex>
+           }
+           <div style={landscape
+                       ?{width:"67%",
+                         padding:rem(1),
+                        }
+                       :{flexGrow:1,
+                         padding:rem(1),
+                        }}>
              <Chart {...{...props}}
                     userid={activeUserId}
                     filter={filter}/>
