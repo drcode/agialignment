@@ -396,7 +396,12 @@
                      :message "Comms czar @MIRIBerkeley"
                      :aiRisk  true
                      :whenAgi 2032
-                     :agiDoom 99.5}])
+                     :agiDoom 99.5}
+                    {:userid       "ID_AA_Carmack"
+                     :message      "Creator of the Doom video game, now AGI researcher at Keen Technologies"
+                     :aiResearcher true
+                     :whenAgi      2035
+                     :agiDoom      10}])
 
 (defn fill-starting-data []
   (doseq [{:keys [userid

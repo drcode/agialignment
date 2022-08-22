@@ -121,7 +121,6 @@ function Avatar(props){
     props.onPopperChange(false);
   }
   return <div style={{...style,
-                      //                      border:"solid",
                       zIndex:pushed?0:avatarZIndex(followers),
                       borderRadius:"50%",
                      }}
