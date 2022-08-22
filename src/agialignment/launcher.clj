@@ -1,5 +1,8 @@
 (ns agialignment.launcher
-  (:require [agialignment.agialignment :as ez]))
+  (:require [agialignment.agialignment :as ez]
+            [agialignment.scraper :as sc]))
 
-(ez/permanent-database!)
-(ez/start-server)
+(sc/fetch-avatar "lisperati")
+;;(ez/permanent-database!)
+;;(ez/start-server)
+
