@@ -537,8 +537,6 @@ function App(props){
                                      "Everyone Else":true});
   const [deleteState,setDeleteState]=useState(0);
   const landscape=window.innerHeight<window.innerWidth;
-  if(!params.oauth_token&&!params.abcd)
-    return <div/>;
   function signinClick(){
     directQuery(graphql`
        query agialignmentUrlQuery {
